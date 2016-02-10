@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace WindowsFormsApplication
+namespace SimpleCalculator
 {
     static class Program
     {
@@ -14,12 +13,9 @@ namespace WindowsFormsApplication
         [STAThread]
         static void Main()
         {
-               
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
-
-            //HELLO From Gor Rustamyan
+            Application.Run(new fmSimpleCalculator());
         }
     }
 }
