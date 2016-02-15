@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
-using System.Net;
-using Server;
 using System.Threading;
+using System.Threading.Tasks;
 
-namespace MessangerServer
+namespace Intership.Messenger.Server
 {
     class Server
     {
         TcpListener _listener;
-
-        List<User> _users;
+        List<Client> _clients;
 
         public ServerConfiguration Config
         {
@@ -22,54 +20,48 @@ namespace MessangerServer
         }
 
 
+
         public Server()
         {
             Config = new ServerConfiguration();
-            _users = new List<User>();
+            _clients = new List<Client>();
         }
 
-
         public void Start()
-        {
+        { 
             _listener = new TcpListener(IPAddress.Any, Config.Port);
             _listener.Start();
 
-
-            while(true)
+            while (true)
             {
-                var tcpclient = _listener.AcceptTcpClient();
-                var newClient = new User(tcpclient);
+                var tcpClient = _listener.AcceptTcpClient();
+                var newClient = new Client(tcpClient);
                 HandleClient(newClient);
             }
+        
 
+            
 
         }
 
-        private void HandleClient(User newclient)
+        void HandleClient(Client newClient)
         {
-            _users.Add(newclient);
+            
 
+            _clients.Add(newClient);
 
-            var sendThread = new Thread(newclient.StartSend);
+       
+
+            var sendThread = new Thread(newClient.StartSend);
             sendThread.Start();
 
-            var receiveThread = new Thread(newclient.StartReceived);
+            var receiveThread = new Thread(newClient.StartReceive);
             receiveThread.Start();
-
-
+           
         }
 
         public void Stop()
         {
-
         }
-
-
-
-
-
-
     }
-
-   
 }
